@@ -1,8 +1,186 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+<!-- slider area -->
+<div class="slider-area">
+    <!-- Slider -->
+    <div class="block-slider block-slider4">
+        <ul class="" id="bxslider-home4">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+          @*   @if (Model.shares.Count() > 0)
+            {
+                @foreach (var obj in Model.shares.Take(4))
+                { *@
+                    <li>
+                        <img src="~/images/slider/2077.png" alt="Slide">
+                        <div class="caption-group">
+                            <h2 class="caption title">
+                               AllGames.nameGame
+                            </h2>
+                            <h4 class="caption subtitle">AllGames.Ganres.nameGanres</h4>
+                            <a class="caption button-radius" asp-controller="" asp-action="" asp-route-id=0><span class="icon"></span>Купи сейчас от discountPrice BYN вместо <del>AllGames.price</del> BYN</a>
+                        </div>
+                    </li>
+@* 
+                }
+            } *@
+
+
+        </ul>
+    </div>
+    <!-- ./Slider -->
 </div>
+<!-- End slider area -->
+<!-- promo area -->
+<div class="promo-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="single-promo promo1">
+                    <i class="fa fa-key"></i>
+                    <p>Лицензионные ключи </p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="single-promo promo2">
+                    <i class="fa fa-gear"></i>
+                    <p>Гарантированная техподдержка</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="single-promo promo3">
+                    <i class="fa fa-ticket"></i>
+                    <p>Регулярные акции, скидки и бонусы</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="single-promo promo4">
+                    <i class="fa fa-money"></i>
+                    <p>Удобная оплата <br>игр</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End promo area -->
+<!-- product widget area -->
+<div class="product-widget-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="single-product-widget">
+                    <h2 class="product-wid-title">Лидеры продаж</h2>
+                    <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
+
+                 @*    @if (Model.allGames.Count() > 0)
+                    {
+                        @foreach (var obj in Model.allGames.Take(3))
+                        { *@
+                            <div class="single-wid-product">
+                                <img src="~/images/product/2077.png" alt="" />
+                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <div class="product-wid-rating">
+                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+
+                                </div>
+                                <div class="product-wid-price">
+                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                    {
+                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
+                                        { *@
+                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
+                                  @*       }
+                                    } *@
+                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
+                                    { *@
+                                        <ins>price BYN</ins>
+                                  @*   } *@
+                                    <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
+                                </div>
+                            </div>
+                  @*       }
+                    } *@
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="single-product-widget">
+                    <h2 class="product-wid-title">Популярные</h2>
+                    <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
+
+                   @*  @if (Model.allGames.Count() > 0)
+                    {
+                        @foreach (var obj in Model.allGames.OrderBy(a => a.price).Take(3))
+                        { *@
+
+                            <div class="single-wid-product">
+                                <img src="~/images/product/2077.png" alt="" />
+                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <div class="product-wid-rating">
+                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                                </div>
+                                <div class="product-wid-price">
+                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                    {
+                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
+                                        { *@
+                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
+                                   @*      }
+                                    } *@
+                                   @*  @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
+                                    { *@
+                                        <ins>price BYN</ins>
+                                  @*   } *@
+                                    <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
+                                </div>
+                            </div>
+                    @*     }
+                    } *@
+
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="single-product-widget">
+                    <h2 class="product-wid-title">Новинки</h2>
+                    <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
+
+
+                   @*  @if (Model.allGames.Count() > 0)
+                    {
+                        @foreach (var obj in Model.allGames.OrderByDescending(s => s.dateAddedSite).Take(3))
+                        { *@
+
+                            <div class="single-wid-product">
+                                <img src="~/images/product/2077.png" alt="" />
+                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <div class="product-wid-rating">
+                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                                </div>
+                                <div class="product-wid-price">
+                                 @*    @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                    {
+                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
+                                        { *@
+                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
+                                  @*       }
+                                    } *@
+@*                                     @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
+                                    { *@
+                                        <ins>price BYN</ins>
+                                   @*  } *@
+                                    <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
+                                </div>
+                            </div>
+               @*          }
+                    } *@
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End product widget area -->

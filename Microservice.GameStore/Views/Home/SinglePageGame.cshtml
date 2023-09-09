@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "Name Game";
+}
+
+<!--Area Sigle Page-->
+@* @if (Model.allGames.Count() > 0 && Model.shares.Count() == 0)
+{
+    @foreach (var obj in Model.allGames)
+    { *@
+        <div class="container">
+            <div class="_newSingleAreaGame">
+
+                <div class="_previewGame">
+                    <img src="~/images/product/2077.png" alt="" />
+                </div>
+                <div class="_NameGame_and_other_info">
+                    <h1>nameGame</h1>
+                    <p>Ganres.nameGanres, Developers.nameDeveloper, releaseDate</p>
+                    <p>Активация: Platforms.namePlatform</p>
+                    <p>Особенности:  features</p>
+                    <div class="_priceGame">
+                        <ins>price BYN</ins>
+                    </div>
+                    <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
+                </div>
+            </div>
+            <div class="_descriptionGame">
+                <h1>Описание:</h1>
+                <p>
+                    descriptionG
+                </p>
+            </div>
+            <div class="_videoGameTriler">
+                <iframe src="https://www.youtube.com/embed/linkTrailerGame" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="_GameScreenShots">
+                <!-- Slider -->
+                <div class="block-slider block-slider4">
+                    <ul class="" id="bxslider-home4">
+                        <li>
+                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_1.png" alt="screenshotGame_1" />
+                        </li>
+                        <li>
+                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_2.png" alt="screenshotGame_1" />
+                        </li>
+                        <li>
+                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_3.png" alt="screenshotGame_1" />
+                        </li>
+                        <li>
+                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_4.png" alt="screenshotGame_1" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="system_requirements">
+                <h2>Системные требования:</h2>
+                <p>ОС: <i>OS</i></p>
+                <p>Процессор: <i>CPU </i></p>
+                <p>Оперативная память: <i>RAM GB </i></p>
+                <p>Видеокарта: <i>VRAM</i></p>
+                <p>Место на диске: <i>GameWeight GB</i></p>
+            </div>
+        </div>
+@*     }
+
+} *@
+

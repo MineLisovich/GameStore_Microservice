@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Каталог";
+}
+
+<!-- product-big-title-area -->
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2><b>Каталог</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End product-big-title-area -->
+<!-- single-product-area -->
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+
+    <div class="container">
+        <form method="get">
+            <div class="form-group">
+                <input name="name" class="form-control" placeholder="Поиск" />
+            </div>
+        </form>
+
+        <form method="get" class="sort_form">
+            <select name="ganre"> </select>
+            <select name="platfoms"></select>
+            <select name="developres"></select>
+            <label>Цена:</label>
+            <input name="price_from" type="number" placeholder="от" />
+            <input name="price_before" type="number" placeholder="до" />
+            <button type="submit" class="button_filter">Фильтровать</button>
+        </form>
+
+        <div class="row">
+
+
+
+            <!-- начала цикла -->
+@*             @if (Model.allGames.Count() > 0)
+            {
+
+                @foreach (var obj in Model.allGames)
+                {
+ *@
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="single-shop-product">
+                            <div class="product-upper">
+                                <img src="~/images/product/2077.png" alt="" />
+                            </div>
+                    <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                            <div class="product-wid-rating">
+                                <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                            </div>
+                            <div class="product-carousel-price">
+                                @* @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                {
+                                    @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
+                                    { *@
+                                        <ins>discountPrice BYN</ins> <del>price BYN</del>
+                               @*   }
+                                } *@
+                               @*  @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
+                                { *@
+                                    <ins>price BYN</ins>
+                                @* } *@
+
+
+                            </div>
+
+                            <div class="product-option-shop">
+                                <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
+                            </div>
+                        </div>
+                    </div>
+      @*           }
+            }
+ *@
+            <!-- конец цикла -->
+        </div>
+    </div>
+</div>
+<!-- End product-big-title-area -->
+
