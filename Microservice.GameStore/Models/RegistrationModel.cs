@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Microservice.Authorization.Models
+namespace Microservice.GameStore.Models
 {
     public class RegistrationModel
     {       

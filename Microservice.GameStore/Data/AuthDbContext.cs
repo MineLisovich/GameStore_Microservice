@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Microservice.Authorization.Data
+namespace Microservice.GameStore.Data
 {
     public class AuthDbContext : DbContext
     {

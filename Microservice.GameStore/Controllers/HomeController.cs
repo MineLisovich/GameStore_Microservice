@@ -26,5 +26,28 @@ namespace Microservice.GameStore.Controllers
         {
             return View();
         }
+
+        public async Task<JsonResult> Test()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri($"https://localhost:7254");
+                var response = await httpClient.GetAsync("/api/Test/test");
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    var final_result = "Это сообщение было получено с микросервиса User: " + result;
+                    return Json(final_result);
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+        }
     }
 }

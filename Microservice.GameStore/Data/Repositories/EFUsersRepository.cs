@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Microservice.Authorization.Data.Repositories
+namespace Microservice.GameStore.Data.Repositories
 {
     public class EFUsersRepository : IUsersRepository
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Microservice.Authorization.Services
+namespace Microservice.GameStore.Services
 {
     public class AuthOptions
     {

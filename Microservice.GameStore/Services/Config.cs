@@ -1,4 +1,4 @@
-﻿namespace Microservice.Authorization.Services
+﻿namespace Microservice.GameStore.Services
 {
     public class Config
     {

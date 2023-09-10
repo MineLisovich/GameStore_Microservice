@@ -1,38 +1,33 @@
-﻿using Microservice.Authorization.Data;
-using Microservice.Authorization.Data.Repositories;
-using Microservice.Authorization.Models;
-using Microservice.Authorization.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microservice.GameStore.Data;
+using Microservice.GameStore.Data.Repositories;
+using Microservice.GameStore.Models;
+using Microservice.GameStore.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
-namespace Microservice.Authorization.Controllers
+
+namespace Microservice.GameStore.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly IUsersRepository _usersRepository;
-        public AuthController(IUsersRepository usersRepository) { _usersRepository = usersRepository; }
-
-
+        public AccountController(IUsersRepository usersRepository) { _usersRepository = usersRepository; }
         [HttpGet]
-        [Route("getuser")]
-        public async Task <IEnumerable<Users>> GetUsers()
+        public IActionResult Login()
         {
-            IEnumerable<Users> users = await _usersRepository.GetUsersListAsync();
-            return users;
+            return View();
         }
         [HttpPost]
-        [Route("login")]
-        public  IResult Login([FromBody] LoginModel model)
+        public  IActionResult Login ( LoginModel model)
         {
-            var identity =  GetIdentity(model.Login, model.Password);
+            var identity = GetIdentity(model.Login, model.Password);
             if (identity == null)
             {
-                return Results.NotFound(new { message = "Неверный логин или пароль" });
+                return NotFound(new { message = "Неверный логин или пароль" });
             }
 
             var date_time = DateTime.UtcNow;
@@ -47,16 +42,14 @@ namespace Microservice.Authorization.Controllers
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-       
-
             HttpContext.Response.Cookies.Append("GemeStoreCookie", encodedJwt,
-              new CookieOptions
-              {
-                  MaxAge = TimeSpan.FromMinutes(120)
-              });
-
-            return Results.Json(encodedJwt);
+             new CookieOptions
+             {
+                 MaxAge = TimeSpan.FromMinutes(120)
+             });
+            return RedirectToAction("Index", "Home");
         }
+
         private ClaimsIdentity GetIdentity(string login, string password)
         {
             Users user = _usersRepository.FindByLoginPassword(login, password);
@@ -75,25 +68,28 @@ namespace Microservice.Authorization.Controllers
 
             return null;
         }
-
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
         [HttpPost]
-        [Route("registration")]
-        public IResult Registration (RegistrationModel model)
+        public IActionResult Registration(RegistrationModel model)
         {
             Users usermodel = new Users();
-            if (model.Login != null && model.Password !=null && model.Email != null)
+            if (model.Login != null && model.Password != null && model.Email != null)
             {
                 usermodel.Login = model.Login;
                 usermodel.Password = model.Password;
                 usermodel.Email = model.Email;
                 usermodel.Role = "User";
                 _usersRepository.Save(usermodel);
-                return Results.Json(usermodel); 
+                return RedirectToAction("Account", "Login");
             }
-            return Results.NotFound(new { message = "Заполните поля" });  
+            return NotFound(new { message = "Заполните поля" });
         }
+
         [HttpGet]
-        [Route("logout")]
         public IActionResult Logout()
         {
             HttpContext.Response.Cookies.Delete("GemeStoreCookie",
@@ -101,8 +97,10 @@ namespace Microservice.Authorization.Controllers
              {
                  Expires = DateTime.Now.AddDays(-10)
              });
-            return Ok();
+            return RedirectToAction("Index", "Home");
         }
-    
+
+
+
     }
 }
