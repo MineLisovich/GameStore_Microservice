@@ -27,7 +27,7 @@ namespace Microservice.GameStore.Controllers
             var identity = GetIdentity(model.Login, model.Password);
             if (identity == null)
             {
-                return NotFound(new { message = "Неверный логин или пароль" });
+                return View(model);
             }
 
             var date_time = DateTime.UtcNow;
@@ -84,9 +84,9 @@ namespace Microservice.GameStore.Controllers
                 usermodel.Email = model.Email;
                 usermodel.Role = "User";
                 _usersRepository.Save(usermodel);
-                return RedirectToAction("Account", "Login");
+                return RedirectToAction("Login", "Account");
             }
-            return NotFound(new { message = "Заполните поля" });
+            return View(model);
         }
 
         [HttpGet]

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.GameStore", "Microservice.GameStore\Microservice.GameStore.csproj", "{F471124D-A3AA-4C2D-9023-77ACF4416223}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservice.Products", "Microservice.Products\Microservice.Products.csproj", "{B171C0E7-96E3-4032-9D92-CED46E2BCA0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F471124D-A3AA-4C2D-9023-77ACF4416223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F471124D-A3AA-4C2D-9023-77ACF4416223}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F471124D-A3AA-4C2D-9023-77ACF4416223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B171C0E7-96E3-4032-9D92-CED46E2BCA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B171C0E7-96E3-4032-9D92-CED46E2BCA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B171C0E7-96E3-4032-9D92-CED46E2BCA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B171C0E7-96E3-4032-9D92-CED46E2BCA0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

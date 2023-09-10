@@ -1,6 +1,7 @@
 ﻿using Microservice.GameStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace Microservice.GameStore.Controllers
 {
@@ -27,27 +28,30 @@ namespace Microservice.GameStore.Controllers
             return View();
         }
 
-        public async Task<JsonResult> Test()
-        {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.BaseAddress = new Uri($"https://localhost:7254");
-                var response = await httpClient.GetAsync("/api/Test/test");
+        //public async Task<JsonResult> Test()
+        //{
+            
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        var token = HttpContext.Request.Cookies["GemeStoreCookie"];
+        //        httpClient.BaseAddress = new Uri($"https://localhost:7046");
+        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //        var response = await httpClient.GetAsync("/api/Test/test");
+                
+        //        if (response.IsSuccessStatusCode)
+        //        {
 
-                if (response.IsSuccessStatusCode)
-                {
+        //            var result = await response.Content.ReadAsStringAsync();
 
-                    var result = await response.Content.ReadAsStringAsync();
+        //            var final_result = "Это сообщение было получено с микросервиса User: " + result;
+        //            return Json(final_result);
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
 
-                    var final_result = "Это сообщение было получено с микросервиса User: " + result;
-                    return Json(final_result);
-                }
-                else
-                {
-                    return null;
-                }
-
-            }
-        }
+        //    }
+        //}
     }
 }

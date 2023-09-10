@@ -1,22 +1,20 @@
-using Microservice.GameStore.Data;
-using Microservice.GameStore.Data.Repositories;
-using Microservice.GameStore.Services;
+using Microservice.Products.Data;
+using Microservice.Products.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 builder.Configuration.Bind("ConnectionString", new Config());
+// Add services to the container.
 
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddScoped<IUsersRepository, EFUsersRepository>();
-builder.Services.AddTransient<AuthOptions>();
-builder.Services.AddDbContext<AuthDbContext>(x => x.UseSqlServer(Config.DefaultConnection));
+builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<AuthOption>();
+builder.Services.AddDbContext<ProductsDbContext>(x => x.UseSqlServer(Config.DefaultConnection));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,26 +32,22 @@ builder.Services.AddAuthentication(options =>
             //указывает, будет ли валидироваться создатель при валидации токена
             ValidateIssuer = true,
             //строка представляющая издателя
-            ValidIssuer = AuthOptions.ISSUER,
+            ValidIssuer = AuthOption.ISSUER,
 
             //будет ли валидироваться потребитель токена
             ValidateAudience = true,
             //установка потребителя токена
-            ValidAudience = AuthOptions.AUDIENCE,
+            ValidAudience = AuthOption.AUDIENCE,
 
             //будет ли валидироваться время существования токена
             ValidateLifetime = true,
 
             //установка секретного ключа
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            IssuerSigningKey = AuthOption.GetSymmetricSecurityKey(),
             //валидация секретного ключа
             ValidateIssuerSigningKey = true,
         };
     });
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -63,15 +57,13 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin();
     });
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 app.UseCookiePolicy(new CookiePolicyOptions
 {
@@ -79,9 +71,9 @@ app.UseCookiePolicy(new CookiePolicyOptions
     HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.Always
 });
+
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-
 app.Use(async (context, next) =>
 {
     var token = context.Request.Cookies["GemeStoreCookie"];
@@ -92,15 +84,11 @@ app.Use(async (context, next) =>
     context.Response.Headers.Add("X-Frame-Options", "DENY");
     await next();
 });
-app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();
