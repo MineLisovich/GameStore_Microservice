@@ -1,19 +1,33 @@
 using Microservice.Products.Data;
+using Microservice.Products.Data.Repositories.Abstract;
+using Microservice.Products.Data.Repositories.EntityFramework;
 using Microservice.Products.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.Bind("ConnectionString", new Config());
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(x =>
+ x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+;
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<AuthOption>();
+
+builder.Services.AddScoped<IDevelopers, EFDevelopers>();
+builder.Services.AddScoped<IGames,EFGames>();
+builder.Services.AddScoped<IGamesKeys,EFGamesKeys>();
+builder.Services.AddScoped<IGanres,EFGanres>();
+builder.Services.AddScoped<IPlatforms,EFPlatforms>();
+builder.Services.AddScoped<IShares,EFShares>();
+
 builder.Services.AddScoped<DataManager>();
 builder.Services.AddDbContext<ProductsDbContext>(x => x.UseSqlServer(Config.DefaultConnection));
 builder.Services.AddAuthentication(options =>

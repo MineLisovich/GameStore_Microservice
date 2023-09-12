@@ -1,6 +1,7 @@
 ﻿using Microservice.Products.Data.Entities;
 using Microservice.Products.Data.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Microservice.Products.Data.Repositories.EntityFramework
 {
@@ -13,12 +14,9 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
             _context = context;
         }
 
-        public async Task<IQueryable<Games>> GetAllAsync()
+        public async Task<IEnumerable<Games>> GetAllAsync()
         {
-            IQueryable<Games> result = (IQueryable<Games>)await _context.Games.Include(d=>d.Developers)
-                                                                               .Include(g=>g.Ganres)
-                                                                               .Include(p=>p.Platforms).ToListAsync();
-            return result;
+            return await _context.Games.Include(d=>d.Developers).Include(g=>g.Ganres).Include(p=>p.Platforms).ToListAsync();
         }
         public async Task<Games> GetByIdAsync(int id)
         {

@@ -13,10 +13,9 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
             _context = context;
         }
 
-        public async Task<IQueryable<GamesKeys>> GetAllAsync()
-        {
-            IQueryable<GamesKeys> result = (IQueryable<GamesKeys>)await _context.GamesKeys.Include(g=>g.Games).ToListAsync();
-            return result;
+        public async Task<IEnumerable<GamesKeys>> GetAllAsync()
+        {              
+            return  await _context.GamesKeys.Include(g=>g.Games).ToListAsync();
         }
         public async Task<GamesKeys> GetByIdAsync(int id)
         {

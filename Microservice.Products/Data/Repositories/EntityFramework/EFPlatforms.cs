@@ -13,10 +13,10 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
             _context = context;
         }
 
-        public async Task<IQueryable<Platforms>> GetAllAsync()
+        public async Task<IEnumerable<Platforms>> GetAllAsync()
         {
-            IQueryable<Platforms> result = (IQueryable<Platforms>)await _context.Platforms.ToListAsync();
-            return result;
+           
+            return await _context.Platforms.ToListAsync();
         }
         public async Task<Platforms> GetByIdAsync(int id)
         {

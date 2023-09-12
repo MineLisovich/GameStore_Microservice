@@ -11,19 +11,18 @@ namespace Microservice.Products.Data
         public IShares Shares { get; set; }
         public IGamesKeys GamesKeys { get; set; }
 
-    
 
-        public DataManager(IGames _Games, IDevelopers _Developers,
-            IGanres _Ganres, IPlatforms _Platforms, IShares _Shares,
-            IGamesKeys _GamesKeys)
+
+        public DataManager(IGames Games, IDevelopers Developers,
+            IGanres Ganres, IPlatforms Platforms, IShares Shares,
+            IGamesKeys GamesKeys)
         {
-            Games = _Games;
-            Developers = _Developers;
-            Ganres = _Ganres;
-            Platforms = _Platforms;
-            Shares = _Shares;
-            GamesKeys = _GamesKeys;
-
+            this.Games = Games;
+            this.Developers = Developers;
+            this.Ganres = Ganres;   
+            this.Platforms = Platforms; 
+            this.Shares = Shares;
+            this.GamesKeys = GamesKeys;
         }
     }
 }

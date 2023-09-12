@@ -13,10 +13,10 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
             _context = context;
         }
 
-        public async Task<IQueryable<Shares>> GetAllAsync()
+        public async Task<IEnumerable<Shares>> GetAllAsync()
         {
-            IQueryable<Shares> result = (IQueryable<Shares>)await _context.Shares.Include(g => g.Games).ToListAsync();
-            return result;
+           
+            return await _context.Shares.Include(g => g.Games).ToListAsync();
         }
         public async Task<Shares> GetByIdAsync(int id)
         {

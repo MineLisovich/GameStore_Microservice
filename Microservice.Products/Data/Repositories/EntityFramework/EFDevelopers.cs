@@ -13,10 +13,9 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
             _context = context;
         }
 
-        public async Task <IQueryable<Developers>> GetAllAsync()
+        public async Task <IEnumerable<Developers>> GetAllAsync()
         {
-            IQueryable<Developers> result = (IQueryable<Developers>)await _context.Developers.ToListAsync();
-            return result;
+           return await _context.Developers.ToListAsync();
         }
         public async Task<Developers> GetByIdAsync (int id)
         {
