@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<AuthOption>();
+builder.Services.AddScoped<DataManager>();
 builder.Services.AddDbContext<ProductsDbContext>(x => x.UseSqlServer(Config.DefaultConnection));
 builder.Services.AddAuthentication(options =>
 {
