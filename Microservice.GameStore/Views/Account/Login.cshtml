@@ -13,14 +13,14 @@
                     <form asp-area="" asp-controller="Account" asp-action="Login" method="post">
 
                         <div class="input__item">
-                            <input asp-for="Login"  placeholder="Введите логин" /><span class="icon_mail"><i class="fa fa-user"></i></span>
+                            <input asp-for="UserName"  placeholder="Введите логин" /><span class="icon_mail"><i class="fa fa-user"></i></span>
 
                         </div>
 
                         <div class="input__item">
                             <input asp-for="Password" placeholder="Введите пароль" /><span class="icon_lock"><i class="fa fa-key"></i></span>
                         </div>
-                        <span asp-validation-for="Login" class="spanErr"></span><br>
+                        <span asp-validation-for="UserName" class="spanErr"></span><br>
                         <span asp-validation-for="Password" class="spanErr"></span>
                         <button type="submit" class="site-btn">ВХОД</button>
                     </form>

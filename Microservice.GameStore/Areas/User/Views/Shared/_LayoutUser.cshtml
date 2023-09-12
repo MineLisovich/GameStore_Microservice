@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Microservice.GameStore</title>
+    @await Html.PartialAsync("_Partial.CSSLinks")
+</head>
+<body>
+    <!--header area -->
+    @await Html.PartialAsync("_Partial.User.Header")
+    @await Html.PartialAsync("_Partial.MainMenuArea")
+    <!-- End header area -->
+    @RenderBody()
+    <!-- footer top area -->
+    @await Html.PartialAsync("_Partial.Footer")
+    <!-- End footer bottom area -->
+    @await Html.PartialAsync("_Partial.Scripts")
+
+</body>
+</html>

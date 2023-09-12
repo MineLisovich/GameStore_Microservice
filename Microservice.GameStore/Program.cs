@@ -1,22 +1,46 @@
 using Microservice.GameStore.Data;
-using Microservice.GameStore.Data.Repositories;
 using Microservice.GameStore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Configuration.Bind("ConnectionString", new Config());
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddScoped<IUsersRepository, EFUsersRepository>();
+var configuration = builder.Configuration.GetValue<string>("DbConnection");
+builder.Services.AddDbContext<AuthDbContext>(x => x.UseSqlServer(configuration));
 builder.Services.AddTransient<AuthOptions>();
-builder.Services.AddDbContext<AuthDbContext>(x => x.UseSqlServer(Config.DefaultConnection));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(conf =>
+{
+    //длинна пароля
+    conf.Password.RequiredLength = 4;
+    //требования к цифрам
+    conf.Password.RequireDigit = false;
+    //требования к спец символам
+    conf.Password.RequireNonAlphanumeric = false;
+    //требования к заглавным буквам
+    conf.Password.RequireUppercase = false;
+}).AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(conf =>
+{
+    conf.Cookie.Name = "GemeStoreCookie";
+    conf.LoginPath = "/Account/Login";
+    conf.LogoutPath = "/Account/Logout";
+    conf.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+});
+
+builder.Services.AddCors(conf =>
+{
+    conf.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,36 +75,31 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddCors(options =>
+builder.Services.AddAuthorization(conf =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    conf.AddPolicy("AdminArea", policy =>
     {
-        policy.AllowAnyHeader();
-        policy.AllowAnyMethod();
-        policy.AllowAnyOrigin();
+        policy.RequireRole(UserRolesList.Admin);
+    });
+    conf.AddPolicy("UserArea", policy =>
+    {
+        policy.RequireRole(UserRolesList.User);
     });
 });
 
+builder.Services.AddControllersWithViews(conf =>
+{
+    conf.Conventions.Add(new AdminAreaAuthorization(UserRolesList.Admin, "AdminArea"));
+    conf.Conventions.Add(new UserAreaAuthorization(UserRolesList.User, "UserArea"));
+}).AddSessionStateTempDataProvider();
+
+//
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-app.UseCookiePolicy(new CookiePolicyOptions
-{
-    MinimumSameSitePolicy = SameSiteMode.Strict,
-    HttpOnly = HttpOnlyPolicy.Always,
-    Secure = CookieSecurePolicy.Always
-});
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseCors("AllowAll");
+app.UseRouting();
 
 app.Use(async (context, next) =>
 {
@@ -92,13 +111,17 @@ app.Use(async (context, next) =>
     context.Response.Headers.Add("X-Frame-Options", "DENY");
     await next();
 });
-app.UseStaticFiles();
-
-app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "User",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

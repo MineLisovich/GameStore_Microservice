@@ -1,36 +1,77 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microservice.GameStore.Data
 {
-    public class AuthDbContext : DbContext
+    public class AuthDbContext : IdentityDbContext<IdentityUser>
+
     {
         public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
 
-        public DbSet<Users>? Users { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-
-            modelBuilder.Entity<Users>().HasData(new Users
+            //
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Id = 1,
-                Login = "admin",
-                Password = "admin",
-                Email = "admin@gmail.com",
-                Role = "Admin"
+                Id = "601",
+                Name = UserRolesList.Admin,
+                NormalizedName = UserRolesList.Admin
 
             });
-            modelBuilder.Entity<Users>().HasData(new Users
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Id = 2,
-                Login = "user",
-                Password = "user",
-                Email = "user@gmail.com",
-                Role = "User"
+                Id = "602",
+                Name = UserRolesList.User,
+                NormalizedName = UserRolesList.User,
 
             });
+            modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
+            {
+                Id = "701",
+                UserName = "deeLimpay",
+                NormalizedUserName = "deeLimpay",
+                PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "admin1"),
+                SecurityStamp = string.Empty,
+                Email = "deeLimpay@mail.ru",
+                NormalizedEmail = "deeLimpay@mail.ru",
+                EmailConfirmed = true,
+            });
+
+
+            modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
+            {
+                Id = "702",
+                UserName = "Stepashka",
+                NormalizedUserName = "Stepashka",
+                PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "user11"),
+                SecurityStamp = string.Empty,
+                Email = "stepa@gmail.com",
+                NormalizedEmail = "stepa@gmail.com",
+                EmailConfirmed = true,
+
+
+            });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                UserId = "701",
+                RoleId = "601"
+
+            });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                UserId = "702",
+                RoleId = "602"
+
+            });
+
         }
     }
 }

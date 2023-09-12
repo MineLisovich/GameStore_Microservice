@@ -1,0 +1,52 @@
+﻿@* @Model.identityUser.Id *@ 
+<!--Profile and basket area-->
+<div class="container">
+    <div class="NewProfileArea">
+        <div class="UserMenu">
+            <ul>
+                <li>@* @Model.identityUser.UserName *@ UserName</li>
+                <li><a asp-area="user" asp-controller="Orders" asp-action="MyOrders">Мои покупки</a></li>
+                <li><a asp-area="user" asp-controller="Users" asp-action="Edit" asp-route-id=>Изменить персональные данные</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="ForgotPassword">Изменить пароль</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="Logout">Выход</a></li>
+            </ul>
+        </div>
+        <div class="HederBasket">Корзина:</div>
+      @*   @if (Model.basket.Where(g => g.UserId == @Model.identityUser.Id).Count() > 0)
+        {
+
+            @foreach (var obj in Model.basket.Where(g => g.UserId == @Model.identityUser.Id))
+            { *@
+                <div class="basketArea">
+                    <div class="imgBastet">
+                        <img width="150px" height="200px" src="~/images/product/2077.png">
+                    </div>
+                    <div class="bastet_info">
+                        <h1>AllGames.nameGame</h1>
+                        <p>finalPrice BYN</p>
+                        <p>Активация: AllGames.Platforms.namePlatform</p>
+                    </div>
+                    <div class="href_del">
+                        <a asp-area="User" asp-controller="Basket" asp-action="Delete" asp-route-id=0>Удалить</a>
+                    </div>
+                </div>
+
+        @*     } *@
+
+            <div class="PaymentArea">
+            <div class="finalPrise">Итого: @* @Model.totalPrice *@totalPrice BYN</div>
+                <a asp-controller="Orders" asp-action="Order" class="add_to_cart_button">Оплатить</a>
+            </div>
+     @*    } *@
+        <!--ЕСЛИ ТАБЛИЦА КОРЗИНА БУДЕТ ПУСТА-->
+        @* @if (Model.basket.Where(g => g.UserId == @Model.identityUser.Id).Count() == 0)
+        { *@
+            <!--ЕСЛИ  КОРЗИНА БУДЕТ ПУСТА-->
+            <div class="basketArea">
+                <p class="EmptyBasket">КОРЗИНА ВСЁ ЕЩЁ ПУСТА :(</p>
+            </div>
+     @*    } *@
+
+    </div>
+</div>
+<!--End Profile and basket area-->

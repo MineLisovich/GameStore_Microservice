@@ -14,7 +14,7 @@
 
 
                     <div class="input__item">
-                        <input asp-for="Login" placeholder="Укажите свой login" />
+                        <input asp-for="UserName" placeholder="Укажите свой login" />
                         <span class="icon_mail"><i class="fa fa-user"></i></span>
                     </div>
                     <div class="input__item">
@@ -29,7 +29,7 @@
                     <button type="submit" class="registrationBTN">Зарегистрировать</button>
 
                 </form>
-                <span asp-validation-for="Login" class="spanErr"></span><br>
+                <span asp-validation-for="UserName" class="spanErr"></span><br>
                 <span asp-validation-for="Password" class="spanErr"></span><br>
                 <span asp-validation-for="Email" class="spanErr"></span>
             </div>

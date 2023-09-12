@@ -1,7 +1,7 @@
 ﻿using Microservice.GameStore.Data;
-using Microservice.GameStore.Data.Repositories;
 using Microservice.GameStore.Models;
 using Microservice.GameStore.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -14,93 +14,123 @@ namespace Microservice.GameStore.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUsersRepository _usersRepository;
-        public AccountController(IUsersRepository usersRepository) { _usersRepository = usersRepository; }
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public AccountController(UserManager<IdentityUser> userManager,
+           RoleManager<IdentityRole> roleManager,
+           SignInManager<IdentityUser> signInManager)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginModel());
         }
         [HttpPost]
-        public  IActionResult Login ( LoginModel model)
+        public async Task<IActionResult> Login(LoginModel viewModel)
         {
-            var identity = GetIdentity(model.Login, model.Password);
-            if (identity == null)
+            if (viewModel.UserName == null || viewModel.Password == null)
             {
-                return View(model);
+                return View(viewModel);
             }
-
-            var date_time = DateTime.UtcNow;
-
-            // Создаём JWT token
-            var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.ISSUER,
-                audience: AuthOptions.AUDIENCE,
-                notBefore: date_time,
-                claims: identity.Claims,
-                expires: date_time.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            HttpContext.Response.Cookies.Append("GemeStoreCookie", encodedJwt,
-             new CookieOptions
-             {
-                 MaxAge = TimeSpan.FromMinutes(120)
-             });
-            return RedirectToAction("Index", "Home");
-        }
-
-        private ClaimsIdentity GetIdentity(string login, string password)
-        {
-            Users user = _usersRepository.FindByLoginPassword(login, password);
-            if (user != null)
+            var user = await _userManager.FindByNameAsync(viewModel.UserName);
+            if (user != null && await _userManager.CheckPasswordAsync(user, viewModel.Password))
             {
-                // определяем какие данные будут храниться в jwt токене
-                var claims = new List<Claim>
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                var authClaimes = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+                    new Claim (ClaimTypes.Name, user.UserName),
+                    new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-                ClaimsIdentity claimsIdentity =
-                    new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
-            }
 
-            return null;
+                foreach (var userRole in userRoles)
+                {
+                    authClaimes.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+
+                var token = GetToken(authClaimes);
+                var endtoken = new JwtSecurityTokenHandler().WriteToken(token);
+
+
+                var result = await _signInManager.PasswordSignInAsync(viewModel.UserName, viewModel.Password, false, false);
+                if (result.Succeeded)
+                {
+                    HttpContext.Response.Cookies.Append("GemeStoreCookie", endtoken);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(viewModel);
         }
         [HttpGet]
         public IActionResult Registration()
         {
-            return View();
+            return View(new RegistrationModel());
         }
         [HttpPost]
-        public IActionResult Registration(RegistrationModel model)
+        public async Task<IActionResult> Registration(RegistrationModel viewModel)
         {
-            Users usermodel = new Users();
-            if (model.Login != null && model.Password != null && model.Email != null)
+            if (viewModel.UserName == null || viewModel.Password == null || viewModel.Email == null)
             {
-                usermodel.Login = model.Login;
-                usermodel.Password = model.Password;
-                usermodel.Email = model.Email;
-                usermodel.Role = "User";
-                _usersRepository.Save(usermodel);
-                return RedirectToAction("Login", "Account");
+                return View(viewModel);
             }
-            return View(model);
+            var userExists = await _userManager.FindByNameAsync(viewModel.UserName);
+            if (userExists != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ResponseModel { Status = "Error", Message = "User already exists!" });
+            }
+
+            IdentityUser user = new()
+            {
+                UserName = viewModel.UserName,
+                Email = viewModel.Email,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var result = await _userManager.CreateAsync(user, viewModel.Password);
+            if (!result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseModel { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            }
+
+
+            if (!await _roleManager.RoleExistsAsync(UserRolesList.User))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRolesList.User));
+            }
+
+            if (await _roleManager.RoleExistsAsync(UserRolesList.User))
+            {
+                await _userManager.AddToRoleAsync(user, UserRolesList.User);
+            }
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout(string logoutId)
         {
-            HttpContext.Response.Cookies.Delete("GemeStoreCookie",
-             new CookieOptions
-             {
-                 Expires = DateTime.Now.AddDays(-10)
-             });
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+        private JwtSecurityToken GetToken(List<Claim> authClaimes)
+        {
+            var date_time = DateTime.UtcNow;
+            var token = new JwtSecurityToken(
+                issuer: AuthOptions.ISSUER,
+                audience: AuthOptions.AUDIENCE,
+                expires: date_time.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                claims: authClaimes,
+                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-
+            return token;
+        }
     }
 }
