@@ -1,5 +1,7 @@
 ﻿using Microservice.GameStore.Models;
+using Microservice.GameStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 
@@ -7,9 +9,30 @@ namespace Microservice.GameStore.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            return View();
+            using (var httpClient = new HttpClient())
+            {
+                //httpClient.BaseAddress = new Uri("https://localhost:7296");
+                var responseGetGames = await httpClient.GetAsync("https://localhost:7296/api/produts/games");
+                var responseGetShares = await httpClient.GetAsync("https://localhost:7296/api/shares/shares");
+                if (responseGetGames.IsSuccessStatusCode && responseGetShares.IsSuccessStatusCode)
+                {
+                    var resultGames = await responseGetGames.Content.ReadAsStringAsync();
+                    var resultShares = await responseGetGames.Content.ReadAsStringAsync();
+                    List<GamesModel>? modelGames = JsonConvert.DeserializeObject<List<GamesModel>>(resultGames); 
+                    List<SharesModel>? modelShares = JsonConvert.DeserializeObject<List<SharesModel>>(resultShares);
+
+                    GamesAndSharesViewModel viewModel = new GamesAndSharesViewModel
+                    {
+                        Games = modelGames,
+                        Shares = modelShares
+                    };
+
+                    return View(viewModel); 
+                }
+                return RedirectToAction("ErrorPage", "Error");
+            }   
         }
         public IActionResult Catalog()
         {
@@ -27,31 +50,5 @@ namespace Microservice.GameStore.Controllers
         {
             return View();
         }
-
-        //public async Task<JsonResult> Test()
-        //{
-            
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        var token = HttpContext.Request.Cookies["GemeStoreCookie"];
-        //        httpClient.BaseAddress = new Uri($"https://localhost:7046");
-        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        //        var response = await httpClient.GetAsync("/api/Test/test");
-                
-        //        if (response.IsSuccessStatusCode)
-        //        {
-
-        //            var result = await response.Content.ReadAsStringAsync();
-
-        //            var final_result = "Это сообщение было получено с микросервиса User: " + result;
-        //            return Json(final_result);
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-
-        //    }
-        //}
     }
 }

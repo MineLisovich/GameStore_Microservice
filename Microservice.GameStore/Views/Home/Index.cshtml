@@ -1,4 +1,4 @@
-﻿
+﻿@model GamesAndSharesViewModel
 <!-- slider area -->
 <div class="slider-area">
     <!-- Slider -->
@@ -72,34 +72,34 @@
                     <h2 class="product-wid-title">Лидеры продаж</h2>
                     <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
 
-                 @*    @if (Model.allGames.Count() > 0)
+                    @if (Model.Games.Count() > 0)
                     {
-                        @foreach (var obj in Model.allGames.Take(3))
-                        { *@
+                        @foreach (var obj in Model.Games.Take(3))
+                        { 
                             <div class="single-wid-product">
-                                <img src="~/images/product/2077.png" alt="" />
-                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <img src="~/images/product/@obj.Poster" alt="" />
+                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=@obj.Id>@obj.NameGame</a></h2>
                                 <div class="product-wid-rating">
-                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                                    <p class="descriptionInfo">@obj.Ganres.NameGanres, @obj.Developers.NameDeveloper</p>
 
                                 </div>
                                 <div class="product-wid-price">
-                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                    @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() > 0)
                                     {
-                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
-                                        { *@
-                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
-                                  @*       }
-                                    } *@
-                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
-                                    { *@
-                                        <ins>price BYN</ins>
-                                  @*   } *@
+                                        @foreach (var sh in Model.Shares.Where(s => s.Gamesid == obj.Id))
+                                        { 
+                                            <ins>@sh.DiscountPrice BYN</ins> <del>@obj.Price BYN</del>
+                                         }
+                                    } 
+                                    @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() == 0)
+                                    { 
+                                        <ins>@obj.Price BYN</ins>
+                                     } 
                                     <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
                                 </div>
                             </div>
-                  @*       }
-                    } *@
+                         }
+                    } 
                 </div>
             </div>
 
@@ -109,34 +109,34 @@
                     <h2 class="product-wid-title">Популярные</h2>
                     <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
 
-                   @*  @if (Model.allGames.Count() > 0)
+                    @if (Model.Games.Count() > 0)
                     {
-                        @foreach (var obj in Model.allGames.OrderBy(a => a.price).Take(3))
-                        { *@
+                        @foreach (var obj in Model.Games.OrderBy(a => a.Price).Take(3))
+                        { 
 
                             <div class="single-wid-product">
-                                <img src="~/images/product/2077.png" alt="" />
-                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <img src="~/images/product/@obj.Poster" alt="" />
+                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>@obj.NameGame</a></h2>
                                 <div class="product-wid-rating">
-                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                                    <p class="descriptionInfo">@obj.Ganres.NameGanres, @obj.Developers.NameDeveloper</p>
                                 </div>
                                 <div class="product-wid-price">
-                                  @*   @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                     @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() > 0)
                                     {
-                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
-                                        { *@
-                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
-                                   @*      }
-                                    } *@
-                                   @*  @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
-                                    { *@
-                                        <ins>price BYN</ins>
-                                  @*   } *@
+                                        @foreach (var sh in Model.Shares.Where(s => s.Gamesid == obj.Id))
+                                        { 
+                                            <ins>@sh.DiscountPrice BYN</ins> <del>@obj.Price BYN</del>
+                                        }
+                                    } 
+                                     @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() == 0)
+                                     {
+                                        <ins>@obj.Price BYN</ins>
+                                     } 
                                     <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
                                 </div>
                             </div>
-                    @*     }
-                    } *@
+                        }
+                    } 
 
 
                 </div>
@@ -148,36 +148,34 @@
                     <a asp-controller="Home" asp-action="Catalog" class="wid-view-more">Смотреть все</a>
 
 
-                   @*  @if (Model.allGames.Count() > 0)
+                     @if (Model.Games.Count() > 0)
                     {
-                        @foreach (var obj in Model.allGames.OrderByDescending(s => s.dateAddedSite).Take(3))
-                        { *@
+                        @foreach (var obj in Model.Games.OrderByDescending(s => s.DateAddedSite).Take(3))
+                        { 
 
                             <div class="single-wid-product">
-                                <img src="~/images/product/2077.png" alt="" />
-                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>nameGame</a></h2>
+                                <img src="~/images/product/@obj.Poster" alt="" />
+                                <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>@obj.NameGame</a></h2>
                                 <div class="product-wid-rating">
-                                    <p class="descriptionInfo">Ganres.nameGanres, Developers.nameDeveloper</p>
+                                    <p class="descriptionInfo">@obj.Ganres.NameGanres, @obj.Developers.NameDeveloper</p>
                                 </div>
                                 <div class="product-wid-price">
-                                 @*    @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() > 0)
+                                    @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() > 0)
                                     {
-                                        @foreach (var sh in Model.shares.Where(s => s.AllGamesid == obj.id))
-                                        { *@
-                                            <ins>discountPrice BYN</ins> <del>price BYN</del>
-                                  @*       }
-                                    } *@
-@*                                     @if (Model.shares.Where(s => s.AllGamesid == obj.id).Count() == 0)
-                                    { *@
-                                        <ins>price BYN</ins>
-                                   @*  } *@
+                                        @foreach (var sh in Model.Shares.Where(s => s.Gamesid == obj.Id))
+                                        { 
+                                            <ins>@sh.DiscountPrice BYN</ins> <del>@obj.Price BYN</del>
+                                        }
+                                    }
+                                   @if (Model.Shares.Where(s => s.Gamesid == obj.Id).Count() == 0)
+                                    { 
+                                        <ins>@obj.Price BYN</ins>
+                                    } 
                                     <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
                                 </div>
                             </div>
-               @*          }
-                    } *@
-
-
+                       }
+                    } 
                 </div>
             </div>
         </div>

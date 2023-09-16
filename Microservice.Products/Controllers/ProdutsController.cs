@@ -21,6 +21,8 @@ namespace Microservice.Products.Controllers
             IEnumerable<Games> result =  await _dataManager.Games.GetAllAsync();
             return result;
         }
+
+        //ALL TEST METHODS
         [HttpGet]
         [Route("developers")]
         public async Task<IEnumerable<Developers>> GetDev()
@@ -48,13 +50,6 @@ namespace Microservice.Products.Controllers
         {
             IEnumerable<Platforms> result = await _dataManager.Platforms.GetAllAsync();
             return result;
-        }
-        [HttpGet]
-        [Route("shares")]
-        public async Task<IEnumerable<Shares>> GetShares()
-        {
-            IEnumerable<Shares> result = await _dataManager.Shares.GetAllAsync();
-            return result;
-        }
+        }  
     }
 }
