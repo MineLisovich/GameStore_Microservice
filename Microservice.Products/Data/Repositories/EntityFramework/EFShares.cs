@@ -20,7 +20,7 @@ namespace Microservice.Products.Data.Repositories.EntityFramework
         }
         public async Task<Shares> GetByIdAsync(int id)
         {
-            Shares result = await _context.Shares.Include(g => g.Games).FirstOrDefaultAsync(x => x.Id == id);
+            Shares result = await _context.Shares.Include(g => g.Games).FirstOrDefaultAsync(x => x.Gamesid == id);
             return result;
         }
 

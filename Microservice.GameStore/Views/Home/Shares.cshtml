@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Акции";
 }
+@model GamesAndSharesViewModel
 
 <!-- product-big-title-area -->
 <div class="product-big-title-area">
@@ -37,22 +38,22 @@
 
         <div class="row">
             <!-- начала цикла -->
-           @*  @if (Model.shares.Count() > 0)
+             @if (Model.Shares.Count() > 0)
             {
-                @foreach (var obj in Model.shares)
-                { *@
+                @foreach (var obj in Model.Shares)
+                { 
 
                     <div class="col-md-3 col-sm-6">
                         <div class="single-shop-product">
                             <div class="product-upper">
-                                <img src="~/images/product/2077.png" alt="" />
+                                <img src="~/images/product/@obj.Games.Poster" alt="" />
                             </div>
-                    <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>AllGames.nameGame</a></h2>
+                    <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=@obj.Gamesid>@obj.Games.NameGame</a></h2>
                             <div class="product-wid-rating">
-                                <p class="descriptionInfo">AllGames.Ganres.nameGanres, AllGames.Developers.nameDeveloper</p>
+                                <p class="descriptionInfo">@obj.Games.Ganres.NameGanres, @obj.Games.Developers.NameDeveloper</p>
                             </div>
                             <div class="product-carousel-price">
-                                <ins>discountPrice BYN</ins> <del>AllGames.price BYN</del>
+                                <ins>@obj.DiscountPrice BYN</ins> <del>@obj.Games.Price BYN</del>
                             </div>
 
                             <div class="product-option-shop">
@@ -60,8 +61,8 @@
                             </div>
                         </div>
                     </div>
-         @*        }
-            } *@
+                 }
+            } 
 
             <!-- конец цикла -->
         </div>

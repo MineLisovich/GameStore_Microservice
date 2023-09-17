@@ -21,6 +21,18 @@ namespace Microservice.Products.Controllers
             IEnumerable<Games> result =  await _dataManager.Games.GetAllAsync();
             return result;
         }
+        [HttpGet]
+        [Route("games/{Id}")]
+        public async Task <Games> GetGamesById(int Id)
+        {
+            Games result = await _dataManager.Games.GetByIdAsync(Id);
+            if (result != null)
+            {
+                return result;
+            }
+
+            return null;
+        }
 
         //ALL TEST METHODS
         [HttpGet]

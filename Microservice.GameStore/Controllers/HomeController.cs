@@ -9,6 +9,7 @@ namespace Microservice.GameStore.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public async Task <IActionResult> Index()
         {
             using (var httpClient = new HttpClient())
@@ -34,21 +35,86 @@ namespace Microservice.GameStore.Controllers
                 return RedirectToAction("ErrorPage", "Error");
             }   
         }
-        public IActionResult Catalog()
+        [HttpGet]
+        public async Task <IActionResult> Catalog()
         {
-            return View();
+            using (var httpClient = new HttpClient())
+            {
+                //httpClient.BaseAddress = new Uri("https://localhost:7296");
+                var responseGetGames = await httpClient.GetAsync("https://localhost:7296/api/produts/games");
+                var responseGetShares = await httpClient.GetAsync("https://localhost:7296/api/shares/shares");
+                if (responseGetGames.IsSuccessStatusCode && responseGetShares.IsSuccessStatusCode)
+                {
+                    var resultGames = await responseGetGames.Content.ReadAsStringAsync();
+                    var resultShares = await responseGetGames.Content.ReadAsStringAsync();
+                    List<GamesModel>? modelGames = JsonConvert.DeserializeObject<List<GamesModel>>(resultGames);
+                    List<SharesModel>? modelShares = JsonConvert.DeserializeObject<List<SharesModel>>(resultShares);
+
+                    GamesAndSharesViewModel viewModel = new GamesAndSharesViewModel
+                    {
+                        Games = modelGames,
+                        Shares = modelShares
+                    };
+
+                    return View(viewModel);
+                }
+                return RedirectToAction("ErrorPage", "Error");
+            }
         }
-        public IActionResult Shares() 
-        {  
-            return View();
+        public async Task<IActionResult> Shares() 
+        {
+            using (var httpClient = new HttpClient())
+            {
+                //httpClient.BaseAddress = new Uri("https://localhost:7296");
+                var responseGetGames = await httpClient.GetAsync("https://localhost:7296/api/produts/games");
+                var responseGetShares = await httpClient.GetAsync("https://localhost:7296/api/shares/shares");
+                if (responseGetGames.IsSuccessStatusCode && responseGetShares.IsSuccessStatusCode)
+                {
+                    var resultGames = await responseGetGames.Content.ReadAsStringAsync();
+                    var resultShares = await responseGetGames.Content.ReadAsStringAsync();
+                    List<GamesModel>? modelGames = JsonConvert.DeserializeObject<List<GamesModel>>(resultGames);
+                    List<SharesModel>? modelShares = JsonConvert.DeserializeObject<List<SharesModel>>(resultShares);
+
+                    GamesAndSharesViewModel viewModel = new GamesAndSharesViewModel
+                    {
+                        Games = modelGames,
+                        Shares = modelShares
+                    };
+
+                    return View(viewModel);
+                }
+                return RedirectToAction("ErrorPage", "Error");
+            }
         }
         public IActionResult Support() 
         {
             return View();
         }
-        public IActionResult SinglePageGame()
+        [HttpGet]
+        public async Task <IActionResult> SinglePageGame(int Id)
         {
-            return View();
+            using (var httpClient = new HttpClient())
+            {
+                var responseGetGamesId = await httpClient.GetAsync("https://localhost:7296/api/produts/games/"+ Id);
+                var responseGetSharesId = await httpClient.GetAsync("https://localhost:7296/api/shares/shares/" + Id);
+                if (responseGetGamesId.IsSuccessStatusCode && responseGetSharesId.IsSuccessStatusCode)
+                {
+                    var resultGames = await responseGetGamesId.Content.ReadAsStringAsync();
+                    var resultShares = await responseGetSharesId.Content.ReadAsStringAsync();
+
+                    GamesModel modelGames = JsonConvert.DeserializeObject<GamesModel>(resultGames);
+                    SharesModel modelShares = JsonConvert.DeserializeObject<SharesModel>(resultShares);
+
+                    GamesAndSharesViewModel viewModel = new GamesAndSharesViewModel
+                    {
+                        Game = modelGames,
+                        Share = modelShares
+                    };
+
+                    return View(viewModel);
+                }
+            }
+            return RedirectToAction("ErrorPage", "Error");
         }
     }
 }

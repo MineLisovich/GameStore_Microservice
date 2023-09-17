@@ -1,26 +1,24 @@
 ﻿
-@{
-    ViewData["Title"] = "Name Game";
-}
+@model GamesAndSharesViewModel
 
+@{
+    ViewData["Title"] = Model.Game.NameGame;
+}
 <!--Area Sigle Page-->
-@* @if (Model.allGames.Count() > 0 && Model.shares.Count() == 0)
-{
-    @foreach (var obj in Model.allGames)
-    { *@
+
         <div class="container">
             <div class="_newSingleAreaGame">
 
                 <div class="_previewGame">
-                    <img src="~/images/product/2077.png" alt="" />
+                    <img src="~/images/product/@Model.Game.Poster" alt="" />
                 </div>
                 <div class="_NameGame_and_other_info">
-                    <h1>nameGame</h1>
-                    <p>Ganres.nameGanres, Developers.nameDeveloper, releaseDate</p>
-                    <p>Активация: Platforms.namePlatform</p>
-                    <p>Особенности:  features</p>
+            <h1>@Model.Game.NameGame</h1>
+            <p>@Model.Game.Ganres.NameGanres, @Model.Game.Developers.NameDeveloper, @Model.Game.ReleaseDate</p>
+            <p>Активация: @Model.Game.Platforms.NamePlatform</p>
+            <p>Особенности:  @Model.Game.Features</p>
                     <div class="_priceGame">
-                        <ins>price BYN</ins>
+                <ins>@Model.Game.Price BYN</ins>
                     </div>
                     <a asp-area="" asp-controller="" asp-action="" asp-route-id=0 class="add_to_cart_button">В корзину</a>
                 </div>
@@ -28,11 +26,11 @@
             <div class="_descriptionGame">
                 <h1>Описание:</h1>
                 <p>
-                    descriptionG
+            @Model.Game.DescriptionG
                 </p>
             </div>
             <div class="_videoGameTriler">
-                <iframe src="https://www.youtube.com/embed/linkTrailerGame" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/@Model.Game.LinkTrailerGame" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
             <div class="_GameScreenShots">
@@ -40,30 +38,28 @@
                 <div class="block-slider block-slider4">
                     <ul class="" id="bxslider-home4">
                         <li>
-                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_1.png" alt="screenshotGame_1" />
+                    <img src="~/images/product/screenshotGame/@Model.Game.ScreenshotGame1" alt="screenshotGame_1" />
                         </li>
                         <li>
-                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_2.png" alt="screenshotGame_1" />
+                    <img src="~/images/product/screenshotGame/@Model.Game.ScreenshotGame2" alt="screenshotGame_1" />
                         </li>
                         <li>
-                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_3.png" alt="screenshotGame_1" />
+                    <img src="~/images/product/screenshotGame/@Model.Game.ScreenshotGame3" alt="screenshotGame_1" />
                         </li>
                         <li>
-                    <img src="~/images/product/screenshotGame/Cyberpunk_screenshotGame_4.png" alt="screenshotGame_1" />
+                    <img src="~/images/product/screenshotGame/@Model.Game.ScreenshotGame4" alt="screenshotGame_1" />
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="system_requirements">
                 <h2>Системные требования:</h2>
-                <p>ОС: <i>OS</i></p>
-                <p>Процессор: <i>CPU </i></p>
-                <p>Оперативная память: <i>RAM GB </i></p>
-                <p>Видеокарта: <i>VRAM</i></p>
-                <p>Место на диске: <i>GameWeight GB</i></p>
+        <p>ОС: <i>@Model.Game.OS</i></p>
+        <p>Процессор: <i>@Model.Game.CPU </i></p>
+        <p>Оперативная память: <i>@Model.Game.RAM GB </i></p>
+        <p>Видеокарта: <i>@Model.Game.VRAM</i></p>
+        <p>Место на диске: <i>@Model.Game.GameWeight GB</i></p>
             </div>
         </div>
-@*     }
 
-} *@
 

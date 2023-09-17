@@ -6,24 +6,24 @@
         <ul class="" id="bxslider-home4">
 
 
-          @*   @if (Model.shares.Count() > 0)
+         @*     @if (Model.Shares.Count() > 0)
             {
-                @foreach (var obj in Model.shares.Take(4))
-                { *@
+                @foreach (var obj in Model.Shares.Take(4))
+                { 
                     <li>
-                        <img src="~/images/slider/2077.png" alt="Slide">
+                        <img src="~/images/slider/@obj.Games.Poster" alt="Slide">
                         <div class="caption-group">
                             <h2 class="caption title">
-                               AllGames.nameGame
+                                @obj.Games.NameGame
                             </h2>
-                            <h4 class="caption subtitle">AllGames.Ganres.nameGanres</h4>
-                            <a class="caption button-radius" asp-controller="" asp-action="" asp-route-id=0><span class="icon"></span>Купи сейчас от discountPrice BYN вместо <del>AllGames.price</del> BYN</a>
+                            <h4 class="caption subtitle">@obj.Games.Ganres.NameGanres</h4>
+                            <a class="caption button-radius" asp-controller="" asp-action="" asp-route-id=0><span class="icon"></span>Купи сейчас от @obj.DiscountPrice BYN вместо <del>@obj.Games.Price</del> BYN</a>
                         </div>
                     </li>
-@* 
-                }
-            } *@
 
+                }
+            } 
+ *@
 
         </ul>
     </div>
@@ -116,7 +116,7 @@
 
                             <div class="single-wid-product">
                                 <img src="~/images/product/@obj.Poster" alt="" />
-                        <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>@obj.NameGame</a></h2>
+                                <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=@obj.Id>@obj.NameGame</a></h2>
                                 <div class="product-wid-rating">
                                     <p class="descriptionInfo">@obj.Ganres.NameGanres, @obj.Developers.NameDeveloper</p>
                                 </div>
@@ -155,7 +155,7 @@
 
                             <div class="single-wid-product">
                                 <img src="~/images/product/@obj.Poster" alt="" />
-                                <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=0>@obj.NameGame</a></h2>
+                                <h2><a class="product-name" asp-controller="Home" asp-action="SinglePageGame" asp-route-id=@obj.Id>@obj.NameGame</a></h2>
                                 <div class="product-wid-rating">
                                     <p class="descriptionInfo">@obj.Ganres.NameGanres, @obj.Developers.NameDeveloper</p>
                                 </div>
