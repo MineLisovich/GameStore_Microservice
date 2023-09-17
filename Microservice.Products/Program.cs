@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.Bind("ConnectionString", new Config());
@@ -99,7 +100,16 @@ app.Use(async (context, next) =>
     context.Response.Headers.Add("X-Frame-Options", "DENY");
     await next();
 });
+app.UseStatusCodePages(async context =>
+{
+    var request = context.HttpContext.Request;
+    var response = context.HttpContext.Response;
 
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+    {
+        response.Redirect("https://localhost:7044/Account/Login");
+    }
+});
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

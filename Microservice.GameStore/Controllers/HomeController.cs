@@ -32,7 +32,7 @@ namespace Microservice.GameStore.Controllers
 
                     return View(viewModel); 
                 }
-                return RedirectToAction("ErrorPage", "Error");
+                return RedirectToAction("ErrorPage", "RedirectStatusCode");
             }   
         }
         [HttpGet]
@@ -58,7 +58,7 @@ namespace Microservice.GameStore.Controllers
 
                     return View(viewModel);
                 }
-                return RedirectToAction("ErrorPage", "Error");
+                return RedirectToAction("ErrorPage", "RedirectStatusCode");
             }
         }
         public async Task<IActionResult> Shares() 
@@ -83,7 +83,7 @@ namespace Microservice.GameStore.Controllers
 
                     return View(viewModel);
                 }
-                return RedirectToAction("ErrorPage", "Error");
+                return RedirectToAction("ErrorPage", "RedirectStatusCode");
             }
         }
         public IActionResult Support() 
@@ -114,7 +114,7 @@ namespace Microservice.GameStore.Controllers
                     return View(viewModel);
                 }
             }
-            return RedirectToAction("ErrorPage", "Error");
+            return RedirectToAction("ErrorPage", "RedirectStatusCode");
         }
     }
 }
