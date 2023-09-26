@@ -6,24 +6,24 @@
         <ul class="" id="bxslider-home4">
 
 
-         @*     @if (Model.Shares.Count() > 0)
+        @if (Model.Games.Count() > 0)
             {
-                @foreach (var obj in Model.Shares.Take(4))
+                @foreach (var obj in Model.Games.Take(4))
                 { 
                     <li>
-                        <img src="~/images/slider/@obj.Games.Poster" alt="Slide">
+                        <img src="~/images/slider/@obj.Poster" alt="Slide">
                         <div class="caption-group">
                             <h2 class="caption title">
-                                @obj.Games.NameGame
+                                @obj.NameGame
                             </h2>
-                            <h4 class="caption subtitle">@obj.Games.Ganres.NameGanres</h4>
-                            <a class="caption button-radius" asp-controller="" asp-action="" asp-route-id=0><span class="icon"></span>Купи сейчас от @obj.DiscountPrice BYN вместо <del>@obj.Games.Price</del> BYN</a>
+                            <h4 class="caption subtitle">@obj.Ganres.NameGanres</h4>
+                            <a class="caption button-radius" asp-controller="" asp-action="" asp-route-id=0><span class="icon"></span>Купи сейчас от @obj.Price BYN</a>
                         </div>
                     </li>
 
                 }
             } 
- *@
+
 
         </ul>
     </div>
