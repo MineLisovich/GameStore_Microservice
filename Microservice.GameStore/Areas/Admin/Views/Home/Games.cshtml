@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "Admin- Games panel";
+}
+
+@model GamesAndSharesViewModel
+
+<div class="container">
+    <div class="single-shop-product">
+        <h1>Все игры</h1>
+        <a class="add_to_cart_button" asp-area="Admin" asp-controller="AllGames" asp-action="Edit">Добавить новую игру</a>
+    </div>
+    <form method="get">
+        <div class="form-group">
+            <input name="name" class="form-control" placeholder="Введите наименование игры" />
+        </div>
+    </form>
+    @if (Model.Games.Count() > 0)
+    {
+        @foreach (var obj in Model.Games)
+        {
+            <div class="col-md-3 col-sm-6">
+                <div class="single-shop-product">
+                    <div class="product-upper">
+                        <img src="~/images/product/@obj.Poster" alt="" />
+                    </div>
+                    <b>Наименование:</b> @obj.NameGame <br>
+                    <b>Описание:</b> @obj.DescriptionG <br>
+                    <b>Жанр:</b> @obj.Ganres.NameGanres<br>
+                    <b>Разработчик:</b>@obj.Developers.NameDeveloper<br>
+                    <b>Дата выхода:</b>@obj.ReleaseDate<br>
+                    <b>Цена:</b> @obj.Price BYN<br>
+                    <b>Платформа:</b> @obj.Platforms.NamePlatform <br>
+                    <b>Наименование картинки:</b> @obj.Poster<br>
+                    <b>Дата добавление на сайт:</b>@obj.DateAddedSite<br>
+                    <b>Имя скриншота игры1:</b>@obj.ScreenshotGame1<br>
+                    <b>Имя скриншота игры2:</b>@obj.ScreenshotGame2<br>
+                    <b>Имя скриншота игры3:</b>@obj.ScreenshotGame3<br>
+                    <b>Имя скриншота игры4:</b>@obj.ScreenshotGame4<br>
+                    <b>Сокр. ссылка на ютуб:</b> @obj.LinkTrailerGame<br>
+                    <b>OS:</b> @obj.OS<br>
+                    <b>CPU:</b> @obj.CPU<br>
+                    <b>RAM:</b> @obj.RAM Gb<br>
+                    <b>VRAM:</b> @obj.VRAM<br>
+                    <b>Место на диске:</b> @obj.GameWeight Gb<br>
+                    <b>Особенности:</b> @obj.Features <br>
+                    <div class="product-option-shop">
+                        <a class="control_buttons" asp-area="Admin" asp-controller="AllGames" asp-action="Edit" asp-route-id=@obj.Id>Изменить</a>
+                        <a class="control_buttons" asp-area="Admin" asp-controller="AllGames" asp-action="Delete" asp-route-id=@obj.Id>Удалить</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+
+
+
+
+</div>
+

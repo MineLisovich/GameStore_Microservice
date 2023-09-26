@@ -1,5 +1,7 @@
 ﻿using Microservice.Products.Data;
 using Microservice.Products.Data.Entities;
+using Microservice.Products.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +21,12 @@ namespace Microservice.Products.Controllers
         public async Task <IEnumerable<Games>> GetGames()
         {
             IEnumerable<Games> result =  await _dataManager.Games.GetAllAsync();
-            return result;
+            if (result != null)
+            {
+                return result;
+            }
+
+            return null;
         }
         [HttpGet]
         [Route("games/{Id}")]
@@ -35,20 +42,8 @@ namespace Microservice.Products.Controllers
         }
 
         //ALL TEST METHODS
-        [HttpGet]
-        [Route("developers")]
-        public async Task<IEnumerable<Developers>> GetDev()
-        {
-            IEnumerable<Developers> result = await _dataManager.Developers.GetAllAsync();
-            return result;
-        }
-        [HttpGet]
-        [Route("testgamekeys")]
-        public async Task<IEnumerable<GamesKeys>> GetGameKey()
-        {
-            IEnumerable<GamesKeys> result = await _dataManager.GamesKeys.GetAllAsync();
-            return result;
-        }
+ 
+        
         [HttpGet]
         [Route("ganres")]
         public async Task<IEnumerable<Ganres>> GetGanres()

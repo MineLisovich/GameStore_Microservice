@@ -19,7 +19,12 @@ namespace Microservice.Products.Controllers
         public async Task<IEnumerable<Shares>> GetShares()
         {
             IEnumerable<Shares> result = await _dataManager.Shares.GetAllAsync();
-            return result;
+            if (result != null)
+            {
+                return result;
+            }
+
+            return null;
         }
         [HttpGet]
         [Route("shares/{Id}")]

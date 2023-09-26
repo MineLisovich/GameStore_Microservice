@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Admin- Shares panel";
+}
+
+@model GamesAndSharesViewModel
+<div class="container">
+
+
+
+
+    <div class="single-shop-product">
+        <a class="add_to_cart_button" asp-area="Admin" asp-controller="Shares" asp-action="Edit">Добавить новую скидку на игру</a>
+    </div>
+    <form method="get">
+        <div class="form-group">
+            <input name="name" class="form-control" placeholder="Введите наименование игры" />
+        </div>
+    </form>
+    <table class="tableBasket">
+        <thead>
+            <tr>
+                <td><b>ID:</b></td>
+                <td><b>ID игры:</b></td>
+                <td><b>Наименование игры:</b></td>
+                <td><b>Цена без скидки:</b></td>
+                <td><b>Цена со скидкой:</b></td>
+                <td><b>Имя картинки для слайдера:</b></td>
+                <td><b>Картинка:</b></td>
+                <td><b>Управление</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Shares.Count() > 0)
+            {
+                @foreach (var obj in Model.Shares)
+                {
+                    <tr>
+                        <td>@obj.Id</td>
+                        <td>@obj.Gamesid</td>
+                        <td>@obj.Games.NameGame</td>
+                        <td>@obj.Games.Price</td>
+                        <td>@obj.DiscountPrice</td>
+                        <td>@obj.NameImageSlider</td>
+                        <td><img src="~/images/slider/@obj.NameImageSlider" alt="" /></td>
+                        <td>
+                            <a class="control_buttons" asp-area="Admin" asp-controller="Shares" asp-action="Edit" asp-route-id=@obj.Id>Изменить</a>
+                            <a class="control_buttons" asp-area="Admin" asp-controller="Shares" asp-action="Delete" asp-route-id=@obj.Id>Удалить</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
