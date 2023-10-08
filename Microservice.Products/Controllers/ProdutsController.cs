@@ -40,23 +40,5 @@ namespace Microservice.Products.Controllers
 
             return null;
         }
-
-        //ALL TEST METHODS
- 
-        
-        [HttpGet]
-        [Route("ganres")]
-        public async Task<IEnumerable<Ganres>> GetGanres()
-        {
-            IEnumerable<Ganres> result = await _dataManager.Ganres.GetAllAsync();
-            return result;
-        }
-        [HttpGet]
-        [Route("platfroms")]
-        public async Task<IEnumerable<Platforms>> GetPlatforms()
-        {
-            IEnumerable<Platforms> result = await _dataManager.Platforms.GetAllAsync();
-            return result;
-        }  
     }
 }

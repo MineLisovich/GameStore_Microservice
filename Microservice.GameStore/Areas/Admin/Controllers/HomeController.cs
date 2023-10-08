@@ -115,5 +115,57 @@ namespace Microservice.GameStore.Areas.Admin.Controllers
                 return RedirectToAction("ErrorPage", "RedirectStatusCode");
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Ganres()
+        {
+            var token = HttpContext.Request.Cookies["GemeStoreCookie"];
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri("https://localhost:7296");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await httpClient.GetAsync("/api/Ganres/ganres");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    List<GanresModel>? model = JsonConvert.DeserializeObject<List<GanresModel>>(result);
+
+                    GanresViewModel viewModel = new GanresViewModel
+                    {
+                        Ganres = model
+                    };
+
+                    return View(viewModel);
+                }
+                return RedirectToAction("ErrorPage", "RedirectStatusCode");
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Platforms()
+        {
+            var token = HttpContext.Request.Cookies["GemeStoreCookie"];
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri("https://localhost:7296");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var response = await httpClient.GetAsync("/api/Platforms/platfroms");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+
+                    List<PlatformsModel>? model = JsonConvert.DeserializeObject<List<PlatformsModel>>(result);
+
+                    PlatformsViewModel viewModel = new PlatformsViewModel
+                    {
+                        Platforms = model
+                    };
+
+                    return View(viewModel);
+                }
+                return RedirectToAction("ErrorPage", "RedirectStatusCode");
+            }
+        }
     }
 }
