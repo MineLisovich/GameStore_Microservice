@@ -5,7 +5,11 @@
             <div class="col-md-8">
                 <div class="user-menu">
                     <ul>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Logout"><i class="fa fa-user"></i>Выход</a></li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@User.Identity.Name</li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Logout"><i class="fa fa-user"></i>Выйти</a></li>
+                        }
                         <h1>Панель администратора</h1>
                     </ul>
                 </div>

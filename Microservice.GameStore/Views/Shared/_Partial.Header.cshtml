@@ -5,9 +5,16 @@
             <div class="col-md-8">
                 <div class="user-menu">
                     <ul>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login"><i class="fa fa-user"></i>Войти</a></li>
-                        <li><a asp-area="User" asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i> Профиль</a></li>
-                    </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-area="User" asp-controller="Home" asp-action="Index"><i class="fa fa-user"></i>@User.Identity.Name</a></li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Logout"><i class="fa fa-user"></i>Выйти</a></li>
+                        }
+                        @if(!User.Identity.IsAuthenticated)
+                        {
+                            <li><a asp-area="" asp-controller="Account" asp-action="Login"><i class="fa fa-user"></i>Войти</a></li>
+                        }
+                  </ul>
                 </div>
             </div>
         </div>
